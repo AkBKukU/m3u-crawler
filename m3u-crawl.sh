@@ -37,6 +37,10 @@ pl_gen()
 			echo "$item" >> "00-$1.m3u"
 		fi
 	done
+
+	# Linux file ordering is dumb, sort files
+	sort -o "00-$1.m3u" "00-$1.m3u"
+
 	unset IFS; set +f
 
 
