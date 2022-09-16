@@ -12,9 +12,9 @@ crawl()
 	do
 		if [[ -d "$item" ]]
 		then
-			echo "$item: Is Dir"
-			cd $item
-			echo "Making M3U for \"$(pwd)\""
+			#echo "$item: Is Dir"
+			cd "$item"
+			#echo "Making M3U for \"$(pwd)\""
 			pl_gen "$item"
 			crawl
 			cd ..
@@ -27,14 +27,17 @@ pl_gen()
 {
 	name="$1"
 	local item
+	echo "Creating: 00-$1.m3u"
 	echo $header > "00-$1.m3u"
-	for item in $(find -follow | sed 's|\./||g' | grep -v m3u)
+	IFS=$'\n'; set -f
+	for item in $(find -follow | sed 's|\./||g' | grep -ie "\.flac\|\.mp3\|\.wav\|\.ogg")
 	do
 		if [[ ! -d "$item" ]]
 		then
 			echo "$item" >> "00-$1.m3u"
 		fi
 	done
+	unset IFS; set +f
 
 
 }
