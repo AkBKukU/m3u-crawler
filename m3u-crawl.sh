@@ -27,21 +27,23 @@ pl_gen()
 {
 	name="$1"
 	local item
-	echo "Creating: 00-$1.m3u"
-	echo $header > "00-$1.m3u"
+	name="00 - $1 - AUTO.m3u"
+
+	echo "Creating: $name"
+	echo $header > "$name"
 	IFS=$'\n'; set -f
 	for item in $(find -follow | sed 's|\./||g' | grep -ie "\.flac\|\.mp3\|\.wav\|\.ogg")
 	do
 		if [[ ! -d "$item" ]]
 		then
-			echo "$item" >> "00-$1.m3u"
+			echo "$item" >> "$name"
 		fi
 	done
+	unset IFS; set +f
 
 	# Linux file ordering is dumb, sort files
-	sort -o "00-$1.m3u" "00-$1.m3u"
+	sort -o "$name" "$name"
 
-	unset IFS; set +f
 
 
 }
